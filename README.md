@@ -1,4 +1,4 @@
-# Backend Library
+# Back End Library
 
 Plugin for the management of a complex network and created to simplify the work of developers who can use optimized and simplified functions for their plugins, based on a single core that will never be changed in order to centralize everything.
 
@@ -12,7 +12,7 @@ Plugin for the management of a complex network and created to simplify the work 
 - Advanced Redis support with Redisson and built in messages¹
 - Server scoreboard adapter
 - Simple YAML config library
-- Add server dynamically to Velocity (only with BasementLib on velocity)¹ ²
+- Add server dynamically to Velocity (only with BackLib on velocity)¹ ²
 - Shared servers¹
 - Global player counter¹ ² (for servers and networks)
 - Execute velocity methods directly from bukkit¹ ²
@@ -20,7 +20,7 @@ Plugin for the management of a complex network and created to simplify the work 
 1 Velocity nedded, 2 Redis nedded
 ## Installation
 
-Adding BasementLib to your project
+Adding Back End Library to your project
 The API artifact is published to the GitHub Packages Maven repository. You can add it to your project by adding the following to your build script.
 
 ### Gradle
@@ -55,7 +55,7 @@ dependencies {
 ```
 
 ## Obtaining an instance of the API
-The root API interface is BasementLib. You need to obtain an instance of this interface in order to do anything.
+The root API interface is Back End Lib. You need to obtain an instance of this interface in order to do anything.
 
 ### Using the Bukkit ServicesManager
 When the plugin is enabled, an instance of BasementLib will be provided in the Bukkit ServicesManager. (obviously you need to be writing your plugin for Bukkit!)
@@ -69,12 +69,12 @@ if (provider != null) {
 ```
 
 ### Using the singleton (static access)
-When the plugin is enabled, an instance of BasementLib can be obtained statically from the BasementProvider class. (this will work on all platforms)
+When the plugin is enabled, an instance of Back End Library can be obtained statically from the Git class. (this will work on all platforms)
 
 Note: this method will throw an IllegalStateException if the API is not loaded.
 
 ```java
-BasementLib api = BasementProvider.get();
+Back End Library api = loveahox.get();
 ``` 
 ## API Reference
 
@@ -99,10 +99,10 @@ public void reload() {
 
 #### Logger and Plugin Interfaces
 
-In the it.ohalee.basementlib.api.plugin package there is a generic interface that can be implemented in your plugin if you wish. Under it.ohalee.basementlib.api.plugin.logging there is another interface that you can use in your plugin to implement your own logger, the BasementLib one can be obtained via basementLib.plugin().logger()
+In the it.loveahox.backlib.api.plugin package there is a generic interface that can be implemented in your plugin if you wish. Under it.loveahox.backlib.api.plugin.logging there is another interface that you can use in your plugin to implement your own logger, the BackLib one can be obtained via BackLib.plugin().logger()
 
 ```java
-basementLib.plugin().logger().warn("Test");
+BackLib.plugin().logger().warn("Test");
 ```
 
 #### MySQL
@@ -112,15 +112,15 @@ If the database from the config is not enabled, all the methods we are going to 
 
 To use a database from the basementLib API you need to "load" it: when the plugin is enabled, the database inserted in the config is already loaded. It is then possible to perform operations external to this database by specifying it in the queries.
 ```java
-basementLib.holder().createDatabase("name").ifNotExists(true).build();
+backLib.holder().createDatabase("name").ifNotExists(true).build();
 ```
 
 NOTE: A database is loaded if a create database query is run (even if the database already exists) and is unloaded if a drop database query is run (queries must be run on the server in question for this to happen, is not synchronized between all servers)
 
 To query a database just do:
 ```java
-AbstractMariaDatabase customDatabase = basementLib.database("name");
-AbstractMariaDatabase defaultDatabase = basementLib.database();
+AbstractMariaDatabase customDatabase = backLib.database("name");
+AbstractMariaDatabase defaultDatabase = backLib.database();
 
 defaultDatabase.insert()
 defaultDatabase.select()
@@ -144,7 +144,7 @@ At the end of each query (when you actually use it) you need to call the build()
 
 You can create another pool with the following method in case you need it:
 ```java
-Connector connector = basementLib.createConnector(minPool, maxPool, poolName)
+Connector connector = backLib.createConnector(minPool, maxPool, poolName)
 ```
 
 - Batch queries:
@@ -161,29 +161,11 @@ Connector connector = basementLib.createConnector(minPool, maxPool, poolName)
     }  
   ```
 
-#### Redis
-You can send messages via redis and receive them anywhere:
-
-https://github.com/redisson/redisson/wiki/6.-Distributed-objects#67-topic
-```java
-// Publish message
-basementLib.redisManager().publishMessage(BasementMessage message);
-
-// Register Topic Listener
-basementLib.redisManager().registerTopicListener(String name, BasementMessageHandler<T extends BasementMessage> basementMessageHandler);
-
-// Unregister Topic Listeners
-basementLib.redisManager().unregisterTopicListener(String name, Integer... listenerId);
-
-// Clear Topic Listeners
-basementLib.redisManager().clearTopicListeners(String name);
-```
-
 Message Example
 ```java
 
 // Custom Message class
-public class ServerShutdownMessage extends BasementMessage {
+public class ServerShutdownMessage extends BackEndMessage {
 
     // Channel
     public static final String TOPIC = "server-shutdown";
@@ -207,7 +189,7 @@ public class ServerShutdownMessage extends BasementMessage {
 
 
 // Handler
-public class ServerShutdownHandler implements BasementMessageHandler<ServerShutdownMessage> {
+public class ServerShutdownHandler implements BaackEndMessageHandler<ServerShutdownMessage> {
 
     private final ProxyServer server;
 
@@ -223,15 +205,10 @@ public class ServerShutdownHandler implements BasementMessageHandler<ServerShutd
 }
 
 // Register
-basementLib.redisManager().registerTopicListener(ServerShutdownMessage.TOPIC, new ServerShutdownHandler(this));
+backLib.redisManager().registerTopicListener(ServerShutdownMessage.TOPIC, new ServerShutdownHandler(this));
 
 // Publish message
-basementLib.redisManager().publishMessage(new ServerShutdownMessage("banana", "moon"));
-```
-
-Use redisson client: https://github.com/redisson/redisson
-```java
-RedissonClient client = basementLib.redisManager().redissonClient();
+backLib.redisManager().publishMessage(new ServerShutdownMessage("banana", "moon"));
 ```
 
 #### Remote services
@@ -261,7 +238,7 @@ public interface RemoteVelocityService {
      * @param server the server ranch name
      * @return true if player is in a server ranch, false otherwise
      */
-    boolean isOnRanch(String player, String server);
+    boolean user(String player, String server);
 
     /**
      * Gets if a player is in a server that names start with {@param server}
@@ -270,7 +247,7 @@ public interface RemoteVelocityService {
      * @param server the server ranch name
      * @return true if player is in a server ranch, false otherwise
      */
-    boolean isOnRanch(UUID player, String server);
+    boolean user(UUID player, String server);
 
     /**
      * Gets the server name of a player
@@ -334,15 +311,15 @@ public interface RemoteVelocityService {
 
 ### Bukkit API
 #### Server ID
-The server id is the name of the server that is used in case the BasementLib plugin for velocity is prenste, in order to dynamically register the servers.
+The server id is the name of the server that is used in case the Back End Library plugin for velocity is prenste, in order to dynamically register the servers.
 
-it is obtainable and modifiable via the BasementLib API:
+it is obtainable and modifiable via the BackLib API:
 ```java
-BasementBukkitPlugin basementLib = (BasementBukkitPlugin) BasementProvider.get();
+BackEndBukkitPlugin backLib = (BackEndBukkitPlugin) loveahox.get();
 
 basementLib.setServerID("someName");
 
-String serverID = basementLib.getServerID();
+String serverID = backLib.getServerID();
 ```
 
 #### Chat
