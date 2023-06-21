@@ -1,8 +1,6 @@
-# BasementLib
+# Backend Library
 
 Plugin for the management of a complex network and created to simplify the work of developers who can use optimized and simplified functions for their plugins, based on a single core that will never be changed in order to centralize everything.
-
-[![](https://jitpack.io/v/ServerBasement/BasementLib.svg)](https://jitpack.io/#ServerBasement/BasementLib)
 
 ## Authors
 
@@ -30,37 +28,29 @@ If you're using Gradle, you need to add these lines to your build script.
 
 ### Groovy DSL:
 ```bash
-repositories {
-    maven { url 'https://jitpack.io' }
-}
-
 dependencies {
     # General API
-    compileOnly 'it.ohalee.basementlib:api:1.0'
+    compileOnly 'it.loveahox.basementlib:api:1.0'
     
     # Bukkit API
-    compileOnly 'it.ohalee.basementlib:api-bukkit:1.0'
+    compileOnly 'it.loveahox.basementlib:api-bukkit:1.0'
     
     # Velocity API
-    compileOnly 'it.ohalee.basementlib:api-velocity:1.0'
+    compileOnly 'it.loveahox.basementlib:api-velocity:1.0'
 }
 ```
 
 ### Kotlin DSL:
 ```bash
-repositories {
-    maven { url 'https://jitpack.io' }
-}
-
 dependencies {
     # General API
-    compileOnly("com.github.ServerBasement:BasementLib:api:1.0")
+    compileOnly("com.github.loveahox:BackLib:api:1.0")
     
     # Bukkit API
-    compileOnly("it.ohalee.basementlib:api-bukkit:1.0")
+    compileOnly("it.loveahox.backlib:api-bukkit:1.0")
     
     # Velocity API
-    compileOnly("it.ohalee.basementlib:api-velocity:1.0")
+    compileOnly("it.loveahox.backlib:api-velocity:1.0")
 }
 ```
 
