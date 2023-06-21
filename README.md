@@ -58,10 +58,10 @@ dependencies {
 The root API interface is Back End Lib. You need to obtain an instance of this interface in order to do anything.
 
 ### Using the Bukkit ServicesManager
-When the plugin is enabled, an instance of BasementLib will be provided in the Bukkit ServicesManager. (obviously you need to be writing your plugin for Bukkit!)
+When the plugin is enabled, an instance of BackLib will be provided in the Bukkit ServicesManager. (obviously you need to be writing your plugin for Bukkit!)
 
 ```java
-RegisteredServiceProvider<BasementLib> provider = Bukkit.getServicesManager().getRegistration(BasementLib.class);
+RegisteredServiceProvider<BackLib> provider = Bukkit.getServicesManager().getRegistration(BackLib.class);
 if (provider != null) {
     BasementLib api = provider.getProvider();
     
@@ -110,7 +110,7 @@ BackLib.plugin().logger().warn("Test");
 It may seem that the database APIs are complicated but in reality it is enough to understand and learn how they work to know how to use them in all their power.
 If the database from the config is not enabled, all the methods we are going to see now will return null
 
-To use a database from the basementLib API you need to "load" it: when the plugin is enabled, the database inserted in the config is already loaded. It is then possible to perform operations external to this database by specifying it in the queries.
+To use a database from the Back End Library API you need to "load" it: when the plugin is enabled, the database inserted in the config is already loaded. It is then possible to perform operations external to this database by specifying it in the queries.
 ```java
 backLib.holder().createDatabase("name").ifNotExists(true).build();
 ```
@@ -317,7 +317,7 @@ it is obtainable and modifiable via the BackLib API:
 ```java
 BackEndBukkitPlugin backLib = (BackEndBukkitPlugin) loveahox.get();
 
-basementLib.setServerID("someName");
+backLib.setServerID("someName");
 
 String serverID = backLib.getServerID();
 ```
@@ -356,23 +356,23 @@ public final class Colorizer {
 ```
 
 #### Events
-On bukkit there are two events managed by Basement:
-BasementNewServerFound: Called when a server is added to the list of servers in memory
-BasementServerRemoved: Called when a server is removed or expires in the in-memory server list
+On bukkit there are two events managed by the back end:
+BackEndNewServerFound: Called when a server is added to the list of servers in memory
+BackEndServerRemoved: Called when a server is removed or expires in the in-memory server list
 
 #### Scoreboard
-BasementLib is able to offer a basic scoreboard to players. The integration is simple.
+Back End Library is able to offer a basic scoreboard to players. The integration is simple.
 
 Example:
 ```java
 public class HubScoreboardAdapter implements ScoreboardProvider {
 
-    private BasementBukkitPlugin basementLib;
+    private BackEndBukkitPlugin basementLib;
     private JavaPlugin plugin;
     private String title = "&d&lEXAMPLE";
     private List<String> lines = Arrays.asList(
             "",
-            "  &8› &fOnline: &b%basement_counter_%",
+            "  &8› &fOnline: &b%backend_counter_%",
             "  &8› &fLobby: &b#1",
             "",
             "  &8› &fRank: &b%luckperms_highest_group_by_weight%",
@@ -385,10 +385,10 @@ public class HubScoreboardAdapter implements ScoreboardProvider {
 
     public HubScoreboardAdapter(JavaPlugin plugin) {
         this.plugin = plugin;
-        this.basementLib = (BasementBukkitPlugin) BasementProvider.get();
+        this.backendLib = (BackendBukkitPlugin) loveahox.get();
 
-        basementLib.registerScoreboard(this, 10);
-        basementLib.getScoreboardManager().start();
+        backLib.registerScoreboard(this, 10);
+        backLib.getScoreboardManager().start();
     }
 
     @Override
@@ -408,13 +408,13 @@ public class HubScoreboardAdapter implements ScoreboardProvider {
 
     @Override
     public ScoreboardAdapter getAdapter() {
-        return basementLib.getScoreboardAdapter();
+        return backLib.getScoreboardAdapter();
     }
 }
 ```
 
 ### Velocity API
-Nothing special for now
+Nothing special for now :(
 ## Usage/Examples
 
 ### Random query exaple
@@ -452,17 +452,3 @@ Nothing special for now
   }
   ```
 
-### Random redisson example
-
-```java
-protected final RSetCache<Data> data;
-
-public SomeClass() {
-    data = basement.redisManager().redissonClient().getSetCache("some_data");
-}
-
-public Optional<Data> getData(UUID uuid) {
-    return data.stream().filter(data -> data.getUuid().equals(uuid)).findFirst();
-}
-
-```
