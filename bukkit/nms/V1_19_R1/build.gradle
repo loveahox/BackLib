@@ -1,0 +1,8 @@
+sourceCompatibility = 1.17
+targetCompatibility = 1.17
+
+dependencies {
+    api project(':api-bukkit')
+
+    compileOnly 'org.spigotmc:spigot:1.19.2-R0.1-SNAPSHOT'
+}
