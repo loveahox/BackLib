@@ -6,7 +6,7 @@ Plugin for the management of a complex network and created to simplify the work 
 
 ## Authors
 
-- [@ohAleee](https://github.com/ohAleee)
+- [@loveahox](https://github.com/loveahox)
 
 ## Features
 
