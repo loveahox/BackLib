@@ -1,0 +1,42 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+
+    group = 'it.ohalee.basementlib'
+    version = '1.0.0'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.encoding = 'UTF-8'
+        }
+    }
+
+    project.ext.majorVersion = '1'
+    project.ext.minorVersion = '1'
+    project.ext.fullVersion = project.ext.majorVersion + '.' + project.ext.minorVersion
+
+    repositories {
+        maven { url 'https://repo.papermc.io/repository/maven-public/' }
+        mavenCentral()
+    }
+
+    dependencies {
+        compileOnly 'org.checkerframework:checker-qual:3.21.2'
+        compileOnly 'org.jetbrains:annotations:23.0.0'
+
+        compileOnly 'org.projectlombok:lombok:1.18.24'
+        annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+        testCompileOnly 'org.projectlombok:lombok:1.18.24'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+    }
+}
