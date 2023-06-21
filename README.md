@@ -499,14 +499,3 @@ public Optional<Data> getData(UUID uuid) {
 }
 
 ```
-## FAQ
-
-#### TODO
-
-Suggest me
-
-## Roadmap
-
-- Additional minecraft version support for scoreboard (newer)
-- TAB
-
